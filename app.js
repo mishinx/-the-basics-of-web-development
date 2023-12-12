@@ -1,6 +1,6 @@
 let express = require("express");
 let app = express();
-let PORT = process.env.PORT;
+let PORT = process.env.PORT||5000;
 let path = require('path')
 let methodOverride = require("method-override");
 let postRoutes = require('./routes/blogRoutes');
