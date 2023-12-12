@@ -1,0 +1,13 @@
+jobs:
+  build:
+    working_directory: /app
+
+    steps:
+      - name: Install Dependencies
+        command: npm install
+
+      - name: Build
+        command: npm run build
+
+      - name: Deploy
+        command: npm run deploy
