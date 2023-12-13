@@ -1,41 +1,39 @@
-let express = require("express");
-let app = express();
-let PORT = process.env.PORT||5000;
-let path = require('path')
-let methodOverride = require("method-override");
-let postRoutes = require('./routes/blogRoutes');
-let mongoose = require("mongoose");
+const express = require("express");
+const mongoose = require("mongoose");
+const path = require('path');
+const methodOverride = require("method-override");
+const postRoutes = require('./routes/blogRoutes');
 
 require("dotenv").config();
 
-let db = "mongodb+srv://m1shinx:54542424m@cluster0.rtax1xi.mongodb.net/Node-blog";
+const PORT = process.env.PORT || 5000;
+const MONGO_URL = process.env.MONGO_URL;
 
-//let db = process.env.MONGO_URL;
-//let PORT = process.env.PORT;
+const app = express();
 
-mongoose.connect(db);
+mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride("_method"));
 app.use(postRoutes);
 
-app.get('/',(req,res)=>{
-    res.render('index',{title: "Home"});
+app.get('/', (req, res) => {
+    res.render('index', { title: "Home" });
 });
-
 
 async function start() {
     try {
-        await mongoose.connect(db);
-        console.log('Connection to MongoDB is success!');
+        await mongoose.connect(MONGO_URL);
+        console.log('Connection to MongoDB is successful!');
         app.listen(PORT, () => {
-            console.log(`Server is listening PORT ${PORT}...`);
+            console.log(`Server is listening on PORT ${PORT}...`);
         });
     } catch (error) {
-        console.log("\n Connection erorr!!! \n\n", error);
+        console.log("\n Connection error!!! \n\n", error);
     }
 }
+
 start();
